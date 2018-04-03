@@ -1,0 +1,14 @@
+table {
+  width: 40%;
+  text-align: center;
+  margin: 0 auto;
+  color: grey;
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+#input {
+  height: 15vmin;
+  color: blue;
+  border: 2px solid lightgrey;
+}
