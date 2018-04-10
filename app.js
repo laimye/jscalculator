@@ -13,9 +13,6 @@
   
   function renderDisplay(event) {
     var text = result || display || '0';
-    
-    // console.log('render op', operator, 'num', number, 'res', result, 'display', display);
-    // console.log('text', text);
     $input.textContent = text;
     if (result) {
       display = '';
@@ -41,7 +38,10 @@
 
   function getOperator(oper) {
     if (!$input) return;
-    number = display;
+    if (operator && number) {
+      number = operator(parseFloat(number), parseFloat($input.textContent));
+    }
+    if (!operator) number = display;
     operator = oper;
     display = '';
   }
