@@ -1,42 +1,53 @@
 (function() {
 
-  var input = document.getElementById('input');
+  var $input = document.getElementById('input');
   var number, display, operator, result;
 
   document.getElementById('table').addEventListener('click', handleClick);
 
   function initialize() {
-    input = '';
+    display = '';
     number = operator = result = null;
-    displayInput();
+    renderDisplay();
   }
   
-  function displayInput() {
-    var display = number || result || 0;
-    // display += clickedElement;
-    input.textContent = display;
-  }
-
-  function getOperator(oper) {
-    if (!input) return;
-    number = input;
-    operator = oper;
-    input = '';
-  }
-
-  function handleClick(event) {
-    var clickedElement = event.target.innerHTML;
-    if (clickedElement === 'AC') initialize();
-    if (clickedElement === '+') getOperator(add);
-    if (clickedElement === '-') getOperator(subtract);
-    if (clickedElement === '*') getOperator(multiply);
-    if (clickedElement === '/') getOperator(divide);
-    if (clickedElement === '=') {
-      if(!operator || !number) return;
-      result = operator(parseFloat(number), parseFloat(input));
+  function renderDisplay(event) {
+    var text = result || display || '0';
+    
+    // console.log('render op', operator, 'num', number, 'res', result, 'display', display);
+    // console.log('text', text);
+    $input.textContent = text;
+    if (result) {
+      display = '';
+      op = number = result = null;
     }
   }
 
+  function handleClick(event) {
+    var $clickedElement = event.target.textContent;  
+    renderDisplay();    
+    if ($clickedElement === 'AC') return initialize();
+    if ($clickedElement === '+') return getOperator(add);
+    if ($clickedElement === '-') return getOperator(subtract);
+    if ($clickedElement === 'x') return getOperator(multiply);
+    if ($clickedElement === '/') return getOperator(divide);
+    if ($clickedElement === '=') {
+      if (!operator || !number) return;
+      result = operator(parseFloat(number), parseFloat($input.textContent));
+    }
+    display += $clickedElement;
+    renderDisplay(event);
+  }
+
+  function getOperator(oper) {
+    if (!$input) return;
+    number = display;
+    operator = oper;
+    display = '';
+  }
+
+
+  // *** Operator functions ***
   function add(num1, num2) {
     return num1 + num2;
   }
